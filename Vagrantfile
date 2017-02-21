@@ -80,12 +80,22 @@ Vagrant.configure("2") do |config|
     # this folder is mounted as shared on guest; but on host this is folder with vagrantfile
     hh=/home/vagrant/dotastata
     cd $hh/data
+    # i can install any python version
+    sudo apt-get --yes update
+    sudo apt-get --yes install postgresql-9.3
+    # sudo apt-get --yes install python 3.5
+    # python get-pip.py
+    # pip install virtualenv
+    # this is conda install. it's not very good but pohui
     pp=/home/vagrant/anaconda3
     # before "vagrant up" i should put conda-file in shared folder on host or i should add getting conda command here
-    # 
     bash Anaconda3-4.2.0-Linux-x86_64.sh -b -p $pp
     echo export PATH=/home/vagrant/anaconda3/bin:$PATH >> /home/vagrant/.bashrc
+    # this was need for handly installing extra packages
+    sudo chown -R vagrant /home/vagrant/anaconda3/
     # making env with packages from file 
     $pp/bin/conda create --yes -p $pp/envs/env_dj python=3 --file $hh/requirements.txt	
+    # creating db via script
+    ./postgresql_up.sh
   SHELL
 end
